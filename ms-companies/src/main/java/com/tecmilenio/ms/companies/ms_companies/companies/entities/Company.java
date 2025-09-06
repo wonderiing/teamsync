@@ -1,9 +1,12 @@
 package com.tecmilenio.ms.companies.ms_companies.companies.entities;
 
+import com.tecmilenio.ms.companies.ms_companies.departments.entities.Department;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "companies")
@@ -31,6 +34,19 @@ public class Company {
 
     @Column(unique = true)
     private String telephone;
+
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<Department> departments = new ArrayList<>();
+
+
+    public List<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<Department> departments) {
+        this.departments = departments;
+    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

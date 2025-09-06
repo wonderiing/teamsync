@@ -26,12 +26,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
+    @Transactional(readOnly = true)
     @Override
     public List<CompanyDto> findAll(Pageable pageable) {
         Page<Company> companies = repository.findAll(pageable);
         return companies.stream().map(c -> mapper.toDto(c)).toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public CompanyDto findOneById(Long id) {
 
