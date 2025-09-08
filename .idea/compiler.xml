@@ -8,7 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="eureka-server" />
       </profile>
-      <profile name="Annotation profile for ms-companies" enabled="true">
+      <profile name="Annotation profile for ms-employees" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -16,6 +16,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.3/mapstruct-processor-1.6.3.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.3/mapstruct-1.6.3.jar" />
         </processorPath>
+        <module name="ms-employees" />
         <module name="ms-companies" />
       </profile>
     </annotationProcessing>
@@ -24,6 +25,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="eureka-server" options="-parameters" />
       <module name="ms-companies" options="-parameters" />
+      <module name="ms-employees" options="-parameters" />
     </option>
   </component>
 </project>
