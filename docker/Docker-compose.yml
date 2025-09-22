@@ -1,0 +1,19 @@
+services:
+  ms-attendace:
+    image: mysql
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Alonso1106
+  ms-training:
+    image: mysql
+    ports:
+      - "3309:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Alonso1106
+  ms-requests:
+    image: mysql
+    ports:
+      - "3310:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Alonso1106  
