@@ -1,0 +1,191 @@
+package com.tecmilenio.carlos.ms.requests.services;
+
+import com.tecmilenio.carlos.ms.requests.clients.EmployeeFeignClient;
+import com.tecmilenio.carlos.ms.requests.dto.*;
+import com.tecmilenio.carlos.ms.requests.entities.Request;
+import com.tecmilenio.carlos.ms.requests.entities.RequestStatus;
+import com.tecmilenio.carlos.ms.requests.entities.RequestType;
+import com.tecmilenio.carlos.ms.requests.exceptions.EmployeeNotFoundException;
+import com.tecmilenio.carlos.ms.requests.exceptions.InvalidStatusTransitionException;
+import com.tecmilenio.carlos.ms.requests.exceptions.RequestNotFoundException;
+import com.tecmilenio.carlos.ms.requests.mapper.RequestMapper;
+import com.tecmilenio.carlos.ms.requests.repository.RequestRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class RequestServiceImpl implements RequestService {
+
+    private final RequestRepository requestRepository;
+    private final RequestMapper requestMapper;
+    private final EmployeeFeignClient employeeFeignClient;
+
+    public RequestServiceImpl(RequestRepository requestRepository,
+                            RequestMapper requestMapper,
+                            EmployeeFeignClient employeeFeignClient) {
+        this.requestRepository = requestRepository;
+        this.requestMapper = requestMapper;
+        this.employeeFeignClient = employeeFeignClient;
+    }
+
+    @Override
+    public RequestDto createRequest(CreateRequestDto createRequestDto) {
+        try {
+            EmployeeDto employee = employeeFeignClient.getEmployeeById(createRequestDto.getIdEmployee());
+            if (!"active".equals(employee.getStatus())) {
+                throw new EmployeeNotFoundException("El empleado no está activo");
+            }
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException("Empleado no encontrado con ID: " + createRequestDto.getIdEmployee());
+        }
+
+        Request request = requestMapper.toEntity(createRequestDto);
+        Request savedRequest = requestRepository.save(request);
+        return requestMapper.toDto(savedRequest);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public RequestDto getRequestById(Long requestId) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new RequestNotFoundException("Solicitud no encontrada con ID: " + requestId));
+        return requestMapper.toDto(request);
+    }
+
+    @Override
+    public RequestDto updateRequestStatus(Long requestId, UpdateStatusDto updateStatusDto) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new RequestNotFoundException("Solicitud no encontrada con ID: " + requestId));
+
+        // Validar transición de estado
+        if (!isValidStatusTransition(request.getStatus(), updateStatusDto.getStatus())) {
+            throw new InvalidStatusTransitionException(
+                    String.format("No se puede cambiar de %s a %s", 
+                            request.getStatus().getDisplayName(), 
+                            updateStatusDto.getStatus().getDisplayName()));
+        }
+
+        request.setStatus(updateStatusDto.getStatus());
+        
+        // Si hay una razón, agregarla a la descripción
+        if (updateStatusDto.getReason() != null && !updateStatusDto.getReason().trim().isEmpty()) {
+            String currentDescription = request.getDescription() != null ? request.getDescription() : "";
+            request.setDescription(currentDescription + 
+                    (currentDescription.isEmpty() ? "" : "\n\n") + 
+                    "Comentario: " + updateStatusDto.getReason());
+        }
+
+        Request savedRequest = requestRepository.save(request);
+        return requestMapper.toDto(savedRequest);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RequestDto> getEmployeeRequests(Long employeeId, Pageable pageable) {
+        // Validar que el empleado existe
+        try {
+            employeeFeignClient.getEmployeeById(employeeId);
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException("Empleado no encontrado con ID: " + employeeId);
+        }
+
+        Page<Request> requests = requestRepository.findByIdEmployeeOrderByCreatedAtDesc(employeeId, pageable);
+        return requestMapper.toDtoList(requests.getContent());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RequestDto> getEmployeeRequestsByType(Long employeeId, RequestType requestType, Pageable pageable) {
+        // Validar que el empleado existe
+        try {
+            employeeFeignClient.getEmployeeById(employeeId);
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException("Empleado no encontrado con ID: " + employeeId);
+        }
+
+        Page<Request> requests = requestRepository.findByIdEmployeeAndRequestTypeOrderByCreatedAtDesc(employeeId, requestType, pageable);
+        return requestMapper.toDtoList(requests.getContent());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RequestDto> getEmployeeRequestsByStatus(Long employeeId, RequestStatus status, Pageable pageable) {
+        // Validar que el empleado existe
+        try {
+            employeeFeignClient.getEmployeeById(employeeId);
+        } catch (Exception e) {
+            throw new EmployeeNotFoundException("Empleado no encontrado con ID: " + employeeId);
+        }
+
+        Page<Request> requests = requestRepository.findByIdEmployeeAndStatusOrderByCreatedAtDesc(employeeId, status, pageable);
+        return requestMapper.toDtoList(requests.getContent());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RequestDto> getCompanyRequests(Long companyId, Pageable pageable) {
+        // Obtener todos los empleados de la empresa
+        List<EmployeeDto> employees = employeeFeignClient.getEmployeesByCompanyId(companyId);
+        List<Long> employeeIds = employees.stream().map(EmployeeDto::getId).toList();
+        
+        if (employeeIds.isEmpty()) {
+            return List.of();
+        }
+
+        Page<Request> requests = requestRepository.findByIdEmployeeInOrderByCreatedAtDesc(employeeIds, pageable);
+        return requestMapper.toDtoList(requests.getContent());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RequestDto> getCompanyRequestsByType(Long companyId, RequestType requestType, Pageable pageable) {
+        // Obtener todos los empleados de la empresa
+        List<EmployeeDto> employees = employeeFeignClient.getEmployeesByCompanyId(companyId);
+        List<Long> employeeIds = employees.stream().map(EmployeeDto::getId).toList();
+        
+        if (employeeIds.isEmpty()) {
+            return List.of();
+        }
+
+        Page<Request> requests = requestRepository.findByIdEmployeeInAndRequestTypeOrderByCreatedAtDesc(employeeIds, requestType, pageable);
+        return requestMapper.toDtoList(requests.getContent());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RequestDto> getCompanyRequestsByStatus(Long companyId, RequestStatus status, Pageable pageable) {
+        // Obtener todos los empleados de la empresa
+        List<EmployeeDto> employees = employeeFeignClient.getEmployeesByCompanyId(companyId);
+        List<Long> employeeIds = employees.stream().map(EmployeeDto::getId).toList();
+        
+        if (employeeIds.isEmpty()) {
+            return List.of();
+        }
+
+        Page<Request> requests = requestRepository.findByIdEmployeeInAndStatusOrderByCreatedAtDesc(employeeIds, status, pageable);
+        return requestMapper.toDtoList(requests.getContent());
+    }
+
+    private boolean isValidStatusTransition(RequestStatus currentStatus, RequestStatus newStatus) {
+        // Lógica básica de transiciones válidas
+        switch (currentStatus) {
+            case RECEIVED:
+                return newStatus == RequestStatus.IN_REVIEW || newStatus == RequestStatus.REJECTED;
+            case IN_REVIEW:
+                return newStatus == RequestStatus.APPROVED || newStatus == RequestStatus.REJECTED;
+            case APPROVED:
+                return newStatus == RequestStatus.CLOSED;
+            case REJECTED:
+                return newStatus == RequestStatus.CLOSED || newStatus == RequestStatus.IN_REVIEW;
+            case CLOSED:
+                return false; // No se puede cambiar desde cerrado
+            default:
+                return false;
+        }
+    }
+}
