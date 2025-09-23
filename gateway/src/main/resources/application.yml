@@ -1,0 +1,34 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: ms-requests
+          uri: lb://ms-requests
+          predicates:
+            - Path=/api/v1/requests/**
+          filters:
+            - StripPrefix=0
+        - id: ms-companies
+          uri: lb://ms-companies
+          predicates:
+            - Path=/api/v1/companies/**, /api/v1/departments/**
+          filters:
+            - StripPrefix=0
+        - id: ms-employees
+          uri: lb://ms-employees
+          predicates:
+            - Path=/api/v1/employees/**
+          filters:
+            - StripPrefix=0
+        - id: ms-attendance
+          uri: lb://ms-attendance
+          predicates:
+            - Path=/api/v1/attendances/**
+          filters:
+            - StripPrefix=0
+        - id: ms-training
+          uri: lb://ms-training
+          predicates:
+            - Path=/api/v1/tutorials/**
+          filters:
+            - StripPrefix=0
