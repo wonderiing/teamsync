@@ -1,5 +1,5 @@
 services:
-  ms-attendace:
+  ms-attendance:
     image: mysql
     ports:
       - "3308:3306"

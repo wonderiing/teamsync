@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/requests")
+@RequestMapping("/api/v1/requests")
 @Validated
 public class RequestController {
 

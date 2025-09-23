@@ -2,7 +2,11 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-attendancce/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-companies/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-employees/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-requests/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-training/src/main/java" charset="UTF-8" />
   </component>
 </project>
