@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/attendances")
+@RequestMapping("/api/v1/attendances")
 @Validated
 public class AttendanceController {
 
