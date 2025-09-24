@@ -5,9 +5,7 @@ import jakarta.validation.constraints.Positive;
 
 public class CheckInDto {
 
-    @NotNull(message = "El ID del empleado es obligatorio")
-    @Positive(message = "El ID del empleado debe ser positivo")
-    private Long idEmployee;
+    private Long idEmployee; // Se establece automáticamente desde el token
 
     private String notes;
 

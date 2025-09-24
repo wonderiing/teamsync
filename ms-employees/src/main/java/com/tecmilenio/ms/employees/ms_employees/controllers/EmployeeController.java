@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/employees")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 @Validated
 public class EmployeeController {
 
@@ -45,12 +46,31 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeDto);
     }
 
+    @GetMapping("/my-profile")
+    public ResponseEntity<EmployeeDto> getMyProfile(@RequestHeader("X-Employee-Id") String employeeIdStr) {
+        Long employeeId = Long.parseLong(employeeIdStr);
+        EmployeeDto employeeDto = employeeService.findEmployeeById(employeeId);
+        return ResponseEntity.ok(employeeDto);
+    }
+
     @GetMapping("/company/{companyId}")
     public ResponseEntity<List<EmployeeDto>> getAllCompanyEmployees(
             @PathVariable @Min(1) Long companyId,
             @RequestParam(defaultValue = "0") @Min(0) int page,
             @RequestParam(defaultValue = "10") @Min(1) int size
     ) {
+        Pageable pageable = PageRequest.of(page,size);
+        List<EmployeeDto> employeesByCompany = employeeService.findEmployeesByCompanyId(companyId,pageable);
+        return ResponseEntity.ok(employeesByCompany);
+    }
+
+    @GetMapping("/company-employees")
+    public ResponseEntity<List<EmployeeDto>> getCompanyEmployees(
+            @RequestHeader("X-Company-Id") String companyIdStr,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    ) {
+        Long companyId = Long.parseLong(companyIdStr);
         Pageable pageable = PageRequest.of(page,size);
         List<EmployeeDto> employeesByCompany = employeeService.findEmployeesByCompanyId(companyId,pageable);
         return ResponseEntity.ok(employeesByCompany);

@@ -55,6 +55,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public EmployeeDto findEmployeeByEmail(String email) {
+        Employee employee = repository.findByEmail(email).orElse(null);
+        if (employee != null) {
+            return mapper.toDto(employee);
+        }
+        return null;
+    }
+
     @Transactional
     @Override
     public void deleteEmployee(Long id) {

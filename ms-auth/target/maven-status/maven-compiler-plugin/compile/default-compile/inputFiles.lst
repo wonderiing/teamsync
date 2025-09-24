@@ -1,0 +1,11 @@
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\config\SecurityConfig.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\controllers\AuthController.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\dto\LoginRequest.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\dto\LoginResponse.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\dto\UserInfo.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\entities\Role.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\entities\User.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\MsAuthApplication.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\repositories\UserRepository.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\services\JwtService.java
+C:\Users\ca223\OneDrive\Escritorio\CONOCIMIENTO\Java\worky-ids-proyectofinal\ms-auth\src\main\java\com\tecmilenio\carlos\ms\auth\services\UserService.java

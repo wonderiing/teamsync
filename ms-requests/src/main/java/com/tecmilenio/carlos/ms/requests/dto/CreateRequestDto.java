@@ -3,13 +3,11 @@ package com.tecmilenio.carlos.ms.requests.dto;
 import com.tecmilenio.carlos.ms.requests.entities.RequestType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public class CreateRequestDto {
 
-    @NotNull(message = "El ID del empleado es obligatorio")
-    @Positive(message = "El ID del empleado debe ser positivo")
+    // idEmployee se extrae del token JWT, no se requiere en el body
     private Long idEmployee;
 
     @NotNull(message = "El tipo de solicitud es obligatorio")
@@ -25,8 +23,7 @@ public class CreateRequestDto {
     // Constructors
     public CreateRequestDto() {}
 
-    public CreateRequestDto(Long idEmployee, RequestType requestType, String title, String description) {
-        this.idEmployee = idEmployee;
+    public CreateRequestDto(RequestType requestType, String title, String description) {
         this.requestType = requestType;
         this.title = title;
         this.description = description;

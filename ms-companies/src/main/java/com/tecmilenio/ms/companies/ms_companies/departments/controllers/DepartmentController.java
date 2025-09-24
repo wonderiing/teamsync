@@ -5,7 +5,6 @@ import com.tecmilenio.ms.companies.ms_companies.departments.dto.DepartmentDto;
 import com.tecmilenio.ms.companies.ms_companies.departments.services.DepartmentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/departments")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 @Validated
 public class DepartmentController {
 

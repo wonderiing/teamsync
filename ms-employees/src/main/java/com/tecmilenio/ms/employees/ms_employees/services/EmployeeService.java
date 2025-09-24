@@ -13,6 +13,7 @@ public interface EmployeeService {
     List<EmployeeDto> findAll(Pageable pageable);
     EmployeeDto findEmployeeById(Long id);
     List<EmployeeDto> findEmployeesByCompanyId(Long companyId, Pageable pageable);
+    EmployeeDto findEmployeeByEmail(String email);
     void deleteEmployee(Long id);
     EmployeeDto createEmployee(CreateEmployeeDto createEmployeeDto);
     EmployeeDto updateEmployee(Long id, CreateEmployeeDto createEmployeeDto);

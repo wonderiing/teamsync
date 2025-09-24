@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="eureka-server" />
         <module name="gateway" />
+        <module name="ms-auth" />
       </profile>
       <profile name="Annotation profile for ms-training" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -20,8 +21,19 @@
         <module name="ms-training" />
         <module name="ms-employees" />
         <module name="ms-attendancce" />
-        <module name="ms-companies" />
         <module name="ms-requests" />
+      </profile>
+      <profile name="Annotation profile for ms-companies" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.3/mapstruct-processor-1.6.3.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.3/mapstruct-1.6.3.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.3/mapstruct-processor-1.6.3.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.3/mapstruct-1.6.3.jar" />
+        </processorPath>
+        <module name="ms-companies" />
       </profile>
     </annotationProcessing>
   </component>
@@ -30,6 +42,7 @@
       <module name="eureka-server" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="ms-attendancce" options="-parameters" />
+      <module name="ms-auth" options="-parameters" />
       <module name="ms-companies" options="-parameters" />
       <module name="ms-employees" options="-parameters" />
       <module name="ms-requests" options="-parameters" />

@@ -10,6 +10,8 @@ import com.tecmilenio.carlos.ms.requests.exceptions.InvalidStatusTransitionExcep
 import com.tecmilenio.carlos.ms.requests.exceptions.RequestNotFoundException;
 import com.tecmilenio.carlos.ms.requests.mapper.RequestMapper;
 import com.tecmilenio.carlos.ms.requests.repository.RequestRepository;
+import com.tecmilenio.carlos.ms.requests.utils.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,28 +26,40 @@ public class RequestServiceImpl implements RequestService {
     private final RequestRepository requestRepository;
     private final RequestMapper requestMapper;
     private final EmployeeFeignClient employeeFeignClient;
+    private final JwtUtils jwtUtils;
 
     public RequestServiceImpl(RequestRepository requestRepository,
                             RequestMapper requestMapper,
-                            EmployeeFeignClient employeeFeignClient) {
+                            EmployeeFeignClient employeeFeignClient,
+                            JwtUtils jwtUtils) {
         this.requestRepository = requestRepository;
         this.requestMapper = requestMapper;
         this.employeeFeignClient = employeeFeignClient;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
-    public RequestDto createRequest(CreateRequestDto createRequestDto) {
+    public RequestDto createRequest(CreateRequestDto createRequestDto, HttpServletRequest request) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long employeeId = jwtUtils.extractEmployeeId(token);
+        
+        if (employeeId == null) {
+            throw new RuntimeException("No se pudo extraer el ID del empleado del token");
+        }
+        
+        createRequestDto.setIdEmployee(employeeId);
+        
         try {
-            EmployeeDto employee = employeeFeignClient.getEmployeeById(createRequestDto.getIdEmployee());
+            EmployeeDto employee = employeeFeignClient.getEmployeeById(employeeId);
             if (!"active".equals(employee.getStatus())) {
                 throw new EmployeeNotFoundException("El empleado no está activo");
             }
         } catch (Exception e) {
-            throw new EmployeeNotFoundException("Empleado no encontrado con ID: " + createRequestDto.getIdEmployee());
+            throw new EmployeeNotFoundException("Empleado no encontrado con ID: " + employeeId);
         }
 
-        Request request = requestMapper.toEntity(createRequestDto);
-        Request savedRequest = requestRepository.save(request);
+        Request requestEntity = requestMapper.toEntity(createRequestDto);
+        Request savedRequest = requestRepository.save(requestEntity);
         return requestMapper.toDto(savedRequest);
     }
 
@@ -86,7 +100,14 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RequestDto> getEmployeeRequests(Long employeeId, Pageable pageable) {
+    public List<RequestDto> getEmployeeRequests(HttpServletRequest request, Pageable pageable) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long employeeId = jwtUtils.extractEmployeeId(token);
+        
+        if (employeeId == null) {
+            throw new RuntimeException("No se pudo extraer el ID del empleado del token");
+        }
+        
         // Validar que el empleado existe
         try {
             employeeFeignClient.getEmployeeById(employeeId);
@@ -100,7 +121,14 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RequestDto> getEmployeeRequestsByType(Long employeeId, RequestType requestType, Pageable pageable) {
+    public List<RequestDto> getEmployeeRequestsByType(HttpServletRequest request, RequestType requestType, Pageable pageable) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long employeeId = jwtUtils.extractEmployeeId(token);
+        
+        if (employeeId == null) {
+            throw new RuntimeException("No se pudo extraer el ID del empleado del token");
+        }
+        
         // Validar que el empleado existe
         try {
             employeeFeignClient.getEmployeeById(employeeId);
@@ -114,7 +142,14 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RequestDto> getEmployeeRequestsByStatus(Long employeeId, RequestStatus status, Pageable pageable) {
+    public List<RequestDto> getEmployeeRequestsByStatus(HttpServletRequest request, RequestStatus status, Pageable pageable) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long employeeId = jwtUtils.extractEmployeeId(token);
+        
+        if (employeeId == null) {
+            throw new RuntimeException("No se pudo extraer el ID del empleado del token");
+        }
+        
         // Validar que el empleado existe
         try {
             employeeFeignClient.getEmployeeById(employeeId);
@@ -128,7 +163,14 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RequestDto> getCompanyRequests(Long companyId, Pageable pageable) {
+    public List<RequestDto> getCompanyRequests(HttpServletRequest request, Pageable pageable) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long companyId = jwtUtils.extractCompanyId(token);
+        
+        if (companyId == null) {
+            throw new RuntimeException("No se pudo extraer el ID de la empresa del token");
+        }
+        
         // Obtener todos los empleados de la empresa
         List<EmployeeDto> employees = employeeFeignClient.getEmployeesByCompanyId(companyId);
         List<Long> employeeIds = employees.stream().map(EmployeeDto::getId).toList();
@@ -143,7 +185,14 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RequestDto> getCompanyRequestsByType(Long companyId, RequestType requestType, Pageable pageable) {
+    public List<RequestDto> getCompanyRequestsByType(HttpServletRequest request, RequestType requestType, Pageable pageable) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long companyId = jwtUtils.extractCompanyId(token);
+        
+        if (companyId == null) {
+            throw new RuntimeException("No se pudo extraer el ID de la empresa del token");
+        }
+        
         // Obtener todos los empleados de la empresa
         List<EmployeeDto> employees = employeeFeignClient.getEmployeesByCompanyId(companyId);
         List<Long> employeeIds = employees.stream().map(EmployeeDto::getId).toList();
@@ -158,7 +207,14 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RequestDto> getCompanyRequestsByStatus(Long companyId, RequestStatus status, Pageable pageable) {
+    public List<RequestDto> getCompanyRequestsByStatus(HttpServletRequest request, RequestStatus status, Pageable pageable) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long companyId = jwtUtils.extractCompanyId(token);
+        
+        if (companyId == null) {
+            throw new RuntimeException("No se pudo extraer el ID de la empresa del token");
+        }
+        
         // Obtener todos los empleados de la empresa
         List<EmployeeDto> employees = employeeFeignClient.getEmployeesByCompanyId(companyId);
         List<Long> employeeIds = employees.stream().map(EmployeeDto::getId).toList();

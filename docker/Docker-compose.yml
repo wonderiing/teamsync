@@ -16,4 +16,11 @@ services:
     ports:
       - "3310:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=Alonso1106  
+      - MYSQL_ROOT_PASSWORD=Alonso1106
+  ms-auth:
+    image: mysql
+    ports:
+      - "3311:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Alonso1106
+      - MYSQL_DATABASE=auth  

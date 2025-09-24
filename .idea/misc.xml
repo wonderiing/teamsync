@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/ms-requests/pom.xml" />
         <option value="$PROJECT_DIR$/ms-training/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-auth/pom.xml" />
       </list>
     </option>
   </component>

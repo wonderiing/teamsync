@@ -9,10 +9,14 @@ import com.tecmilenio.carlos.ms.attendance.ms_attendancce.entities.Attendance;
 import com.tecmilenio.carlos.ms.attendance.ms_attendancce.exceptions.*;
 import com.tecmilenio.carlos.ms.attendance.ms_attendancce.mapper.AttendanceMapper;
 import com.tecmilenio.carlos.ms.attendance.ms_attendancce.repository.AttendanceRepository;
+import com.tecmilenio.carlos.ms.attendance.ms_attendancce.utils.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -28,6 +32,9 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final AttendanceMapper attendanceMapper;
     private final EmployeeFeignClient employeeFeignClient;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     public AttendanceServiceImpl(AttendanceRepository attendanceRepository,
                                AttendanceMapper attendanceMapper,
@@ -184,5 +191,85 @@ public class AttendanceServiceImpl implements AttendanceService {
         Attendance attendance = attendanceRepository.findById(attendanceId)
                 .orElseThrow(() -> new AttendanceNotFoundException("Asistencia no encontrada con ID: " + attendanceId));
         return attendanceMapper.toDto(attendance);
+    }
+
+    // Nuevos métodos que extraen información del token JWT
+
+    @Override
+    public AttendanceDto checkIn(CheckInDto checkInDto, HttpServletRequest request) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long employeeId = jwtUtils.extractEmployeeId(token);
+        
+        if (employeeId == null) {
+            throw new RuntimeException("No se pudo extraer el ID del empleado del token");
+        }
+        
+        checkInDto.setIdEmployee(employeeId);
+        return checkIn(checkInDto);
+    }
+
+    @Override
+    public AttendanceDto checkOut(CheckOutDto checkOutDto, HttpServletRequest request) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long employeeId = jwtUtils.extractEmployeeId(token);
+        
+        if (employeeId == null) {
+            throw new RuntimeException("No se pudo extraer el ID del empleado del token");
+        }
+        
+        checkOutDto.setIdEmployee(employeeId);
+        return checkOut(checkOutDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AttendanceDto> getEmployeeAttendances(HttpServletRequest request, Pageable pageable) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long employeeId = jwtUtils.extractEmployeeId(token);
+        
+        if (employeeId == null) {
+            throw new RuntimeException("No se pudo extraer el ID del empleado del token");
+        }
+        
+        return getEmployeeAttendances(employeeId, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AttendanceDto> getEmployeeAttendancesByDateRange(HttpServletRequest request, LocalDate startDate, LocalDate endDate) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long employeeId = jwtUtils.extractEmployeeId(token);
+        
+        if (employeeId == null) {
+            throw new RuntimeException("No se pudo extraer el ID del empleado del token");
+        }
+        
+        return getEmployeeAttendancesByDateRange(employeeId, startDate, endDate);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AttendanceDto> getCompanyAttendances(HttpServletRequest request, Pageable pageable) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long companyId = jwtUtils.extractCompanyId(token);
+        
+        if (companyId == null) {
+            throw new RuntimeException("No se pudo extraer el ID de la empresa del token");
+        }
+        
+        return getCompanyAttendances(companyId, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AttendanceDto> getCompanyAttendancesByDateRange(HttpServletRequest request, LocalDate startDate, LocalDate endDate) {
+        String token = jwtUtils.getTokenFromRequest(request);
+        Long companyId = jwtUtils.extractCompanyId(token);
+        
+        if (companyId == null) {
+            throw new RuntimeException("No se pudo extraer el ID de la empresa del token");
+        }
+        
+        return getCompanyAttendancesByDateRange(companyId, startDate, endDate);
     }
 }

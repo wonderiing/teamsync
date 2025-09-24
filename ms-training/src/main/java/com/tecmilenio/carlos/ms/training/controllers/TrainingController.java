@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tutorials")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 @Validated
 public class TrainingController {
 
@@ -52,6 +53,18 @@ public class TrainingController {
             @RequestParam(defaultValue = "0") @Min(0) int page,
             @RequestParam(defaultValue = "10") @Min(1) int size) {
         
+        Pageable pageable = PageRequest.of(page, size);
+        List<CourseDto> tutorials = trainingService.getCompanyTutorials(companyId, pageable);
+        return ResponseEntity.ok(tutorials);
+    }
+
+    @GetMapping("/my-company")
+    public ResponseEntity<List<CourseDto>> getMyCompanyTutorials(
+            @RequestHeader("X-Company-Id") String companyIdStr,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size) {
+        
+        Long companyId = Long.parseLong(companyIdStr);
         Pageable pageable = PageRequest.of(page, size);
         List<CourseDto> tutorials = trainingService.getCompanyTutorials(companyId, pageable);
         return ResponseEntity.ok(tutorials);
