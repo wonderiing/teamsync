@@ -1,4 +1,4 @@
-# 🏢 TeamSync IDS - Sistema de Gestión Empresarial
+# 🏢 TeamSync - Proyecto Final IDS
 
 Sistema de microservicios para la gestión integral de empresas, empleados, asistencias, solicitudes y capacitaciones.
 
@@ -234,17 +234,6 @@ cd gateway
 - `POST /api/v1/tutorials` - Crear tutorial
 - `GET /api/v1/tutorials/categories` - Categorías
 
-## 📝 Notas Importantes
 
-- **Orden de Ejecución**: Es CRÍTICO seguir el orden especificado
-- **Bases de Datos**: Deben estar corriendo antes que los microservicios
-- **Eureka**: Debe estar corriendo antes que los microservicios de negocio
-- **Gateway**: Debe ser el último en ejecutarse
-- **Puertos**: Verificar que no haya conflictos de puertos
-- **Memoria**: El sistema requiere al menos 4GB de RAM disponible
 
----
 
-**Desarrollado por**: Carlos Alonso  
-**Versión**: 1.0.0  
-**Última actualización**: Septiembre 2024
