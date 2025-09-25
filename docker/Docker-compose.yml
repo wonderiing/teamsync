@@ -1,22 +1,39 @@
 services:
+  ms-companies:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Alonso1106
+      - MYSQL_DATABASE=companies
+  ms-employees:
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Alonso1106
+      - MYSQL_DATABASE=employees
   ms-attendance:
     image: mysql
     ports:
       - "3308:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=Alonso1106
+      - MYSQL_DATABASE=ms_attendance
   ms-training:
     image: mysql
     ports:
       - "3309:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=Alonso1106
+      - MYSQL_DATABASE=ms_training
   ms-requests:
     image: mysql
     ports:
       - "3310:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=Alonso1106
+      - MYSQL_DATABASE=ms_requests
   ms-auth:
     image: mysql
     ports:

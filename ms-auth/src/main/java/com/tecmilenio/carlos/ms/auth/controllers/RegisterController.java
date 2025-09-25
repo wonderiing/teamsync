@@ -87,37 +87,49 @@ public class RegisterController {
     }
     
     /**
-     * Registro de HR
+     * Registro de HR - busca automáticamente por email
      * POST /api/v1/auth/register/hr
      */
     @PostMapping("/register/hr")
     public ResponseEntity<?> registerHr(@RequestBody RegisterRequest request) {
         try {
-            // Verificar si el usuario ya existe
-            if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            // Buscar empleado por email en ms-employees
+            Map<String, Object> employee = employeeFeignClient.findEmployeeByEmail(request.getEmail());
+            
+            if (employee != null) {
+                Long employeeId = Long.valueOf(employee.get("id").toString());
+                Long companyId = Long.valueOf(employee.get("companyId").toString());
+                
+                // Verificar si el usuario ya existe
+                if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+                    return ResponseEntity.badRequest().body(Map.of(
+                        "error", "Ya existe un usuario con este email"
+                    ));
+                }
+                
+                // Crear usuario HR
+                User user = new User();
+                user.setUsername(request.getUsername());
+                user.setEmail(request.getEmail());
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
+                user.setRole(Role.HR);
+                user.setEmployeeId(employeeId);
+                user.setCompanyId(companyId);
+                
+                userRepository.save(user);
+                
+                return ResponseEntity.ok(new RegisterResponse(
+                    "Usuario HR registrado exitosamente",
+                    request.getUsername(),
+                    Role.HR.getValue(),
+                    employeeId,
+                    companyId
+                ));
+            } else {
                 return ResponseEntity.badRequest().body(Map.of(
-                    "error", "Ya existe un usuario con este email"
+                    "error", "No se encontró un empleado con el email: " + request.getEmail()
                 ));
             }
-            
-            // Crear usuario HR
-            User user = new User();
-            user.setUsername(request.getUsername());
-            user.setEmail(request.getEmail());
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
-            user.setRole(Role.HR);
-            user.setEmployeeId(null);
-            user.setCompanyId(request.getCompanyId()); // HR debe especificar companyId
-            
-            userRepository.save(user);
-            
-            return ResponseEntity.ok(new RegisterResponse(
-                "Usuario HR registrado exitosamente",
-                request.getUsername(),
-                Role.HR.getValue(),
-                null,
-                request.getCompanyId()
-            ));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of(
                 "error", "Error al registrar HR: " + e.getMessage()

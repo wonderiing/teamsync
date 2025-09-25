@@ -19,11 +19,10 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.3/mapstruct-1.6.3.jar" />
         </processorPath>
         <module name="ms-training" />
-        <module name="ms-employees" />
         <module name="ms-attendancce" />
         <module name="ms-requests" />
       </profile>
-      <profile name="Annotation profile for ms-companies" enabled="true">
+      <profile name="Annotation profile for ms-employees" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -33,6 +32,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.3/mapstruct-processor-1.6.3.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.3/mapstruct-1.6.3.jar" />
         </processorPath>
+        <module name="ms-employees" />
         <module name="ms-companies" />
       </profile>
     </annotationProcessing>
