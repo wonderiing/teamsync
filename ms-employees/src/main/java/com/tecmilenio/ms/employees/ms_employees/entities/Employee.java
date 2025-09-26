@@ -1,11 +1,13 @@
 package com.tecmilenio.ms.employees.ms_employees.entities;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "employees")
+@Builder
 public class Employee {
 
     @Id
@@ -38,6 +40,7 @@ public class Employee {
     void defaultDate() {
         this.createdAt = LocalDateTime.now();
     }
+
 
     public Long getId() {
         return id;
