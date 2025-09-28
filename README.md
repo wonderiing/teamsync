@@ -54,7 +54,7 @@ Sistema de microservicios para la gestión integral de empresas, empleados, asis
 
 ## FrontEndPreview
 
-![FrontEndPreview](./289shots_so.jpeg)
+![FrontEndPreview](images/289shots_so.jpeg)
 
 
 ## 🗄️ Configuración de Base de Datos
