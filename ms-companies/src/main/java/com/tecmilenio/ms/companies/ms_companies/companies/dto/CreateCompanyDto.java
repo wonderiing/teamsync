@@ -2,7 +2,10 @@ package com.tecmilenio.ms.companies.ms_companies.companies.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
+
+@Builder
 public class CreateCompanyDto {
 
     @NotBlank(message = "fullName cannot be blank")

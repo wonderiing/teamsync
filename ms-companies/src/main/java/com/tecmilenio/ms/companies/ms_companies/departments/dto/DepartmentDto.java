@@ -1,7 +1,9 @@
 package com.tecmilenio.ms.companies.ms_companies.departments.dto;
 
 import com.tecmilenio.ms.companies.ms_companies.companies.entities.Company;
+import lombok.Builder;
 
+@Builder
 public class DepartmentDto {
 
     private Long id;

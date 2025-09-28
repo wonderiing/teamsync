@@ -2,6 +2,7 @@ package com.tecmilenio.ms.companies.ms_companies.companies.entities;
 
 import com.tecmilenio.ms.companies.ms_companies.departments.entities.Department;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Builder
 @Table(name = "companies")
 public class Company {
 

@@ -2,7 +2,9 @@ package com.tecmilenio.ms.companies.ms_companies.departments.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
+@Builder
 public class CreateDepartmentDto {
 
         @NotBlank(message = "fullName cannot be blank")

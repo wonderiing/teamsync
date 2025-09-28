@@ -2,11 +2,13 @@ package com.tecmilenio.ms.companies.ms_companies.departments.entities;
 
 import com.tecmilenio.ms.companies.ms_companies.companies.entities.Company;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "departments")
+@Builder
 public class Department {
 
 

@@ -46,9 +46,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 
         Company company = companyRepository.findById(companyId).orElseThrow(() -> new CompanyNotFound("Company with id " + companyId + " was not found"));
 
-        Department department = new Department();
-        department.setCompany(company);
-        department.setFullName(createDepartmentDto.getFullName());
+        Department department = Department.builder().company(company).fullName(createDepartmentDto.getFullName()).build();
 
         Department savedDepartment = repository.save(department);
         return mapper.toDto(savedDepartment);
