@@ -2,15 +2,18 @@ package com.tecmilenio.ms.companies.ms_companies.companies.entities;
 
 import com.tecmilenio.ms.companies.ms_companies.departments.entities.Department;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "companies")
 public class Company {
 
@@ -26,6 +29,8 @@ public class Company {
 
 
     private String address;
+    
+    @Builder.Default
     private String status = "active";
 
     @Column(name = "created_at")
@@ -39,6 +44,7 @@ public class Company {
 
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Department> departments = new ArrayList<>();
 
 

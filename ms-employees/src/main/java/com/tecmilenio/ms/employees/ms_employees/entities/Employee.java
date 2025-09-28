@@ -1,13 +1,17 @@
 package com.tecmilenio.ms.employees.ms_employees.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "employees")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee {
 
     @Id
@@ -31,6 +35,7 @@ public class Employee {
 
     private String position;
 
+    @Builder.Default
     private String status = "active";
 
     @Column(name = "created_at")
