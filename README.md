@@ -52,6 +52,11 @@ Sistema de microservicios para la gestión integral de empresas, empleados, asis
 - **API Testing**: Postman, Insomnia, o curl
 - **Docker Desktop** (opcional, para bases de datos)
 
+## FrontEndPreview
+
+![FrontEndPreview](./289shots_so.jpeg)
+
+
 ## 🗄️ Configuración de Base de Datos
 
 ### Opción 1: Docker (Recomendado)

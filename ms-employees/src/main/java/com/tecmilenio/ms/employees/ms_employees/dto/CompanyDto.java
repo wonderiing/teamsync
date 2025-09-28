@@ -1,5 +1,8 @@
 package com.tecmilenio.ms.employees.ms_employees.dto;
 
+import lombok.Builder;
+
+@Builder
 public class CompanyDto {
     private Long id;
     private String fullName;
@@ -65,4 +68,5 @@ public class CompanyDto {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
+
 }

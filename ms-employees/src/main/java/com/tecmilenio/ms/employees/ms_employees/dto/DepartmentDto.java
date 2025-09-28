@@ -1,5 +1,8 @@
 package com.tecmilenio.ms.employees.ms_employees.dto;
 
+import lombok.Builder;
+
+@Builder
 public class DepartmentDto {
     private Long id;
     private String fullName;
