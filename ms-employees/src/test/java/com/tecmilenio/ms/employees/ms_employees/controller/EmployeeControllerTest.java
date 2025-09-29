@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tecmilenio.ms.employees.ms_employees.controllers.EmployeeController;
 import com.tecmilenio.ms.employees.ms_employees.dto.CreateEmployeeDto;
 import com.tecmilenio.ms.employees.ms_employees.dto.EmployeeDto;
+import com.tecmilenio.ms.employees.ms_employees.services.EmployeeService;
 import com.tecmilenio.ms.employees.ms_employees.services.EmployeeServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -40,7 +41,7 @@ public class EmployeeControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private EmployeeServiceImpl employeeService;
+    private EmployeeService employeeService;
 
 
 
@@ -54,8 +55,8 @@ public class EmployeeControllerTest {
     static class TestConfig {
         @Bean
         @Primary
-        public EmployeeServiceImpl employeeService() {
-            return Mockito.mock(EmployeeServiceImpl.class);
+        public EmployeeService employeeService() {
+            return Mockito.mock(EmployeeService.class);
         }
     }
 
