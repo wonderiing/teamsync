@@ -41,7 +41,7 @@ public class CompanyControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private CompanyServiceImpl companyService;
+    private CompanyService companyService;
 
     private CompanyDto companyDto;
     private CreateCompanyDto createCompanyDto;
@@ -52,8 +52,8 @@ public class CompanyControllerTest {
     static class TestConfig {
         @Bean
         @Primary
-        public CompanyServiceImpl companyService() {
-            return Mockito.mock(CompanyServiceImpl.class);
+        public CompanyService companyService() {
+            return Mockito.mock(CompanyService.class);
         }
     }
 
