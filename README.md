@@ -107,7 +107,7 @@ FLUSH PRIVILEGES;
 ### 1. Clonar el Repositorio
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/wonderiing/teamsync
 cd worky-ids-proyectofinal
 ```
 
