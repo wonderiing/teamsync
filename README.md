@@ -1,8 +1,8 @@
-# 🏢 TeamSync - Proyecto Final IDS
+# TeamSync - Proyecto Final IDS
 
 Sistema de microservicios para la gestión integral de empresas, empleados, asistencias, solicitudes y capacitaciones.
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Arquitectura del Sistema](#arquitectura-del-sistema)
 - [Requisitos de Instalación](#requisitos-de-instalación)
@@ -11,7 +11,7 @@ Sistema de microservicios para la gestión integral de empresas, empleados, asis
 - [Orden de Ejecución de Microservicios](#orden-de-ejecución-de-microservicios)
 - [Endpoints Principales](#endpoints-principales)
 
-## 🏗️ Arquitectura del Sistema
+## Arquitectura del Sistema
 
 ### Microservicios
 
@@ -36,7 +36,7 @@ Sistema de microservicios para la gestión integral de empresas, empleados, asis
 - **Validación**: Jakarta Validation
 - **Build**: Maven
 
-## 🔧 Requisitos de Instalación
+## Requisitos de Instalación
 
 ### Software Requerido
 
@@ -57,7 +57,7 @@ Sistema de microservicios para la gestión integral de empresas, empleados, asis
 ![FrontEndPreview](images/289shots_so.jpeg)
 
 
-## 🗄️ Configuración de Base de Datos
+## Configuración de Base de Datos
 
 ### Opción 1: Docker (Recomendado)
 
@@ -102,7 +102,7 @@ FLUSH PRIVILEGES;
    - `ms_requests`: localhost:3310
    - `auth`: localhost:3311
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
 ### 1. Clonar el Repositorio
 
@@ -140,7 +140,7 @@ cd ../ms-requests && ./mvnw clean compile
 cd ../ms-training && ./mvnw clean compile
 ```
 
-## ⚠️ Orden de Ejecución de Microservicios
+## Orden de Ejecución de Microservicios
 
 **¡IMPORTANTE!** Los microservicios DEBEN ejecutarse en el siguiente orden:
 
